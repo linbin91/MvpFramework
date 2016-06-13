@@ -22,4 +22,20 @@ public abstract class BaseActivity<T extends  BasePresenter> extends Activity im
     public void hideProgress() {
 
     }
+
+     @Override
+     protected void onResume() {
+      super.onResume();
+         if (mPresenter != null) {
+             mPresenter.onResume();
+         }
+     }
+
+     @Override
+     protected void onDestroy() {
+      super.onDestroy();
+         if (mPresenter != null) {
+             mPresenter.onDestroy();
+         }
+     }
 }

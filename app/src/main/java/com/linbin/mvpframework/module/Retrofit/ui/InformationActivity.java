@@ -1,18 +1,20 @@
-package com.linbin.mvpframework.weather.ui;
+package com.linbin.mvpframework.module.Retrofit.ui;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.linbin.mvpframework.Base.BaseActivity;
 import com.linbin.mvpframework.R;
-import com.linbin.mvpframework.weather.Bean.WeatherInfo;
-import com.linbin.mvpframework.weather.Presenter.WeatherDetailPresenterImpl;
-import com.linbin.mvpframework.weather.View.IWeatherDetailView;
+import com.linbin.mvpframework.bean.Information;
+import com.linbin.mvpframework.module.Retrofit.Presenter.InformationPresenterImpl;
+import com.linbin.mvpframework.module.view.IInformationView;
 
 /**
- * Created by linbin_dian91 on 2016/3/18.
+ * Created by Administrator on 2016/6/12.
  */
-public class WeatherActivity  extends BaseActivity<WeatherDetailPresenterImpl> implements IWeatherDetailView{
+public class InformationActivity extends BaseActivity<InformationPresenterImpl> implements IInformationView {
+
+
 
     private TextView temp;
     private TextView weather;
@@ -25,20 +27,21 @@ public class WeatherActivity  extends BaseActivity<WeatherDetailPresenterImpl> i
         initPresenter();
     }
 
+
+
     private void initPresenter() {
-        mPresenter = new WeatherDetailPresenterImpl(this,"www.baidu.com");
+        mPresenter = new InformationPresenterImpl(this,"http://tq.91.com/info/?&tag=8");
     }
 
     private void initView() {
         weather = (TextView) findViewById(R.id.id_weather);
         temp = (TextView) findViewById(R.id.id_temp);
+        weather.setText("1111111");
     }
 
     @Override
-    public void initWeatherDetail(WeatherInfo data) {
-        if (data != null){
-            weather.setText(data.weather);
-            temp.setText(data.temp);
-        }
+    public void initinformationDetail(Information infos) {
+        temp.setText(infos.getItems().getTitle());
     }
+
 }

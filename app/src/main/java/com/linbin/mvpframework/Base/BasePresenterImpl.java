@@ -2,12 +2,15 @@ package com.linbin.mvpframework.Base;
 
 import com.linbin.mvpframework.callback.RequestCallback;
 
+import rx.Subscription;
+
 /**
  * Created by linbin_dian91 on 2016/3/18.
  */
 public class BasePresenterImpl<T extends  BaseView,V> implements BasePresenter,RequestCallback<V> {
 
     protected  T mView;
+    protected Subscription mSubscription;
 
     public  BasePresenterImpl(T view){
         mView = view;
@@ -20,6 +23,9 @@ public class BasePresenterImpl<T extends  BaseView,V> implements BasePresenter,R
     @Override
     public void onDestroy() {
         mView = null;
+        if (mSubscription != null && !mSubscription.isUnsubscribed()){
+            mSubscription.unsubscribe();
+        }
     }
 
     @Override
