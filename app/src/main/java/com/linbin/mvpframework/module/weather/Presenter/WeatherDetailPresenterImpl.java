@@ -19,6 +19,6 @@ public class WeatherDetailPresenterImpl extends BasePresenterImpl<IWeatherDetail
 
     @Override
     public void requestSuccess(List<WeatherInfo> data) {
-        mView.initWeatherDetail(data);
+        mViewRef.get().initWeatherDetail(data);
     }
 }

@@ -2,6 +2,8 @@ package com.linbin.mvpframework.Base;
 
 import com.linbin.mvpframework.callback.RequestCallback;
 
+import java.lang.ref.WeakReference;
+
 import rx.Subscription;
 
 /**
@@ -9,12 +11,13 @@ import rx.Subscription;
  */
 public class BasePresenterImpl<T extends  BaseView,V> implements BasePresenter,RequestCallback<V> {
 
-    protected  T mView;
     protected Subscription mSubscription;
+    protected WeakReference<T> mViewRef;
 
     public  BasePresenterImpl(T view){
-        mView = view;
+        mViewRef = new WeakReference<T>(view);
     }
+
     @Override
     public void onResume() {
 
@@ -22,7 +25,10 @@ public class BasePresenterImpl<T extends  BaseView,V> implements BasePresenter,R
 
     @Override
     public void onDestroy() {
-        mView = null;
+        if (mViewRef != null){
+            mViewRef.clear();
+            mViewRef = null;
+        }
         if (mSubscription != null && !mSubscription.isUnsubscribed()){
             mSubscription.unsubscribe();
         }
@@ -30,18 +36,18 @@ public class BasePresenterImpl<T extends  BaseView,V> implements BasePresenter,R
 
     @Override
     public void beforeRequest() {
-        mView.showProgress();
+        mViewRef.get().showProgress();
     }
 
     @Override
     public void requestError(String msg) {
-        mView.toast(msg);
-        mView.hideProgress();
+        mViewRef.get().toast(msg);
+        mViewRef.get().hideProgress();
     }
 
     @Override
     public void requestComplete() {
-        mView.hideProgress();
+        mViewRef.get().hideProgress();
     }
 
     @Override
